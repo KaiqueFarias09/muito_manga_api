@@ -1,22 +1,41 @@
-import express, { Request, Response } from 'express';
+import express, { Request, Response} from 'express';
 import cors from 'cors';
 
+import { scrapeMangaList } from './scrapper';
+
 const app = express();
-const port = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 const corsOptions = {
     origin: '*',
     credentails: true,
     optionSucessStatus: 200,
-    port: port,
+    port: PORT,
 };
 
 app.use(cors(corsOptions));
 app.use(express.json());
 
-app.get('/', (req, res) => {
-    res.render
-})
+app.get('/', async (_req: Request, res: Response) => {
+    res.status(200).json('Welcome to Muito Manga API!');
+});
 
-app.listen(port, () => {
-    console.log('listening on port ' + port);
+app.get('/manga_list', async (req: Request, res: Response) => {
+    try {
+        const keyw = req.query.keyw;
+        const orby = req.query.orby;
+        const inGenre = req.query.inGenre;
+
+        await scrapeMangaList({
+            keyw: keyw as string,
+            orby: orby as string,
+            inGenre: inGenre as string,
+        });
+    } catch (err) {
+        res.status(500).json({ status: 500, error: 'Internal error' });
+        console.log(err);
+    }
+});
+
+app.listen(PORT, () => {
+    console.log('listening on port ' + PORT);
 });
