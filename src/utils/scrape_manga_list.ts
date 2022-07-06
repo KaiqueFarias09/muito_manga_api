@@ -24,10 +24,9 @@ export async function scrapeMangaList({ keyw = '', orby = '', inGenre = '' }) {
                 img: manga
                     .find('div:nth-child(1) > img:nth-child(2)')
                     .attr('data-src'),
-                src: `${MAIN_URL}${manga.find('a:nth-child(1)').attr('href')}`,
+                src: `${MAIN_URL}/${manga.attr('href')}`,
             });
         });
-        console.log(data);
         return data;
     } catch (err) {
         console.error(err);

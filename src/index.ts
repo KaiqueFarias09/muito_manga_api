@@ -1,7 +1,8 @@
 import express, { NextFunction, Request, Response } from 'express';
 import cors from 'cors';
 
-import { scrapeMangaList } from './scrapper';
+import { scrapeMangaList } from './utils/scrape_manga_list';
+import { scrapeMangaInfo } from './utils/scrape_manga_info';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -31,9 +32,30 @@ app.get('/manga_list', async (req: Request, res: Response) => {
             inGenre: inGenre as string,
         });
         res.status(200).json(data);
-    } catch (err) {
+    } catch (e) {
         res.status(500).json({ status: 500, error: 'Internal error' });
-        console.log(err);
+        console.log(e);
+    }
+});
+
+app.get('/manga_info', async (req: Request, res: Response) => {
+    try {
+        const url = req.headers['url'] as string;
+        let data = await scrapeMangaInfo(url);
+
+        res.status(200).json(data);
+    } catch (e) {
+        res.status(500).json({ status: 500, error: 'Internal error' });
+        console.log(e);
+    }
+});
+
+app.get('/read_manga', async (req: Request, res: Response) => {
+    try {
+        const url = req.headers['url'] as string;
+    } catch (e) {
+        res.status(500).json({ status: 500, error: 'Internal error' });
+        console.log(e);
     }
 });
 
@@ -45,5 +67,5 @@ app.use((_req: Request, res: Response, _next: NextFunction) => {
 });
 
 app.listen(PORT, () => {
-    console.log('listening on port ' + PORT);
+    console.log('Listening on port ' + PORT);
 });
