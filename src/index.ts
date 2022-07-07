@@ -3,6 +3,7 @@ import cors from 'cors';
 
 import { scrapeMangaList } from './utils/scrape_manga_list';
 import { scrapeMangaInfo } from './utils/scrape_manga_info';
+import { scrapeChapter } from './utils/scrape_chapter';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -26,7 +27,7 @@ app.get('/manga_list', async (req: Request, res: Response) => {
         const orby = req.query.orby;
         const inGenre = req.query.inGenre;
 
-        let data = await scrapeMangaList({
+        const data = await scrapeMangaList({
             keyw: keyw as string,
             orby: orby as string,
             inGenre: inGenre as string,
@@ -41,7 +42,7 @@ app.get('/manga_list', async (req: Request, res: Response) => {
 app.get('/manga_info', async (req: Request, res: Response) => {
     try {
         const url = req.headers['url'] as string;
-        let data = await scrapeMangaInfo(url);
+        const data = await scrapeMangaInfo(url);
 
         res.status(200).json(data);
     } catch (e) {
@@ -53,6 +54,9 @@ app.get('/manga_info', async (req: Request, res: Response) => {
 app.get('/read_manga', async (req: Request, res: Response) => {
     try {
         const url = req.headers['url'] as string;
+        const data = await scrapeChapter(url);
+
+        res.status(200).json(data);
     } catch (e) {
         res.status(500).json({ status: 500, error: 'Internal error' });
         console.log(e);

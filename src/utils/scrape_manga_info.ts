@@ -1,31 +1,34 @@
 import axios from 'axios';
 import { CheerioAPI, load } from 'cheerio';
 
-export async function scrapeMangaInfo(manga_link: string) {
-    const response = await axios.get(manga_link);
-    const page = load(response.data);
-
+export const scrapeMangaInfo = async (manga_link: string) => {
     try {
-        const data = [];
+        const page = await axios.get(manga_link);
+        const scrappedPage = load(page.data);
 
+        const data = [];
         data.push({
-            title: page('h1.subtitles_menus').text().trim(),
-            img: page('.capaMangaInfo > a:nth-child(1) > img').attr('data-src'),
+            title: scrappedPage('h1.subtitles_menus').text().trim(),
+            img: scrappedPage('.capaMangaInfo > a:nth-child(1) > img').attr(
+                'data-src'
+            ),
             status: '',
-            lastUpdated: page(
+            lastUpdated: scrappedPage(
                 'div.single-chapter:nth-child(1) > small:nth-child(2)'
             ).text(),
-            synopsis: page('.boxAnimeSobreLast > p:nth-child(6)').text().trim(),
-            genres: getGenres(page),
-            chapters: getChapters(page),
+            synopsis: scrappedPage('.boxAnimeSobreLast > p:nth-child(6)')
+                .text()
+                .trim(),
+            genres: getGenres(scrappedPage),
+            chapters: getChapters(scrappedPage),
         });
         return data;
     } catch (e) {
         console.log(e);
     }
-}
+};
 
-function getGenres(page: CheerioAPI) {
+const getGenres = (page: CheerioAPI) => {
     const genres = [];
 
     page('.lancamento-list > li').each((_, el) => {
@@ -34,9 +37,9 @@ function getGenres(page: CheerioAPI) {
         });
     });
     return genres;
-}
+};
 
-function getChapters(page: CheerioAPI) {
+const getChapters = (page: CheerioAPI) => {
     const chapters = [];
 
     page('div.single-chapter').each((_, el) => {
@@ -49,4 +52,4 @@ function getChapters(page: CheerioAPI) {
         });
     });
     return chapters;
-}
+};
