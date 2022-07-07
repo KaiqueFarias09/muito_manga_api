@@ -10,27 +10,22 @@ export const scrapeMangaList = async ({
 }) => {
     if (orby === '' && keyw === '' && inGenre === '') {
         const defaultUrl = `${MAIN_URL}/lista-de-mangas`;
-        console.log(defaultUrl);
         return defaultScrapeMangaList(defaultUrl);
     }
 
     if (orby !== '' && keyw === '' && inGenre === '') {
         const orbyUrl = `${MAIN_URL}/lista-de-mangas/${orby}`;
-        console.log(orbyUrl);
         return defaultScrapeMangaList(orbyUrl);
     }
 
     if (orby === '' && keyw !== '' && inGenre === '') {
         const searchUrl = `https://muitomanga.com/buscar?q=${keyw}`;
-        console.log(searchUrl);
         return scrapeSearchResults(searchUrl);
     }
 
     if (orby === '' && keyw === '' && inGenre !== '') {
-        console.log('sou lindo');
-
+        console;
         const genreUrl = `https://muitomanga.com/lista-de-mangas/genero/${inGenre}`;
-        console.log(genreUrl);
         return defaultScrapeMangaList(genreUrl);
     }
 };
