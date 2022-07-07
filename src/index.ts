@@ -4,6 +4,7 @@ import cors from 'cors';
 import { scrapeMangaList } from './utils/scrape_manga_list';
 import { scrapeMangaInfo } from './utils/scrape_manga_info';
 import { scrapeChapter } from './utils/scrape_chapter';
+import axios from 'axios';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
