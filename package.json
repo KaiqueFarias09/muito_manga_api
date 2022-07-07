@@ -4,7 +4,7 @@
   "description": "A webscrapping API for the Muito Mangá website",
   "main": "index.js",
   "engines": {
-    "node": ">=v16.15.1"
+    "node": "v16.15.1"
   },
   "scripts": {
     "start:dev": "nodemon",
