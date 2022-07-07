@@ -2,7 +2,7 @@
   "name": "muito_manga_api",
   "version": "1.0.0",
   "description": "A webscrapping API for the Muito Mangá website",
-  "main": "index.js",
+  "main": "lib/index.js",
   "engines": {
     "node": "v16.15.1"
   },
