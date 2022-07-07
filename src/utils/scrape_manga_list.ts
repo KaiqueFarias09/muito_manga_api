@@ -10,12 +10,12 @@ export const scrapeMangaList = async ({
 }) => {
     if (orby === '' && keyw === '' && inGenre === '') {
         const defaultUrl = `${MAIN_URL}/lista-de-mangas`;
-        return defaultScrapeMangaList(defaultUrl);
+        return scrapeMangas(defaultUrl);
     }
 
     if (orby !== '' && keyw === '' && inGenre === '') {
         const orbyUrl = `${MAIN_URL}/lista-de-mangas/${orby}`;
-        return defaultScrapeMangaList(orbyUrl);
+        return scrapeMangas(orbyUrl);
     }
 
     if (orby === '' && keyw !== '' && inGenre === '') {
@@ -26,11 +26,11 @@ export const scrapeMangaList = async ({
     if (orby === '' && keyw === '' && inGenre !== '') {
         console;
         const genreUrl = `https://muitomanga.com/lista-de-mangas/genero/${inGenre}`;
-        return defaultScrapeMangaList(genreUrl);
+        return scrapeMangas(genreUrl);
     }
 };
 
-const defaultScrapeMangaList = async (url: string) => {
+const scrapeMangas = async (url: string) => {
     try {
         const page = await axios.get(url);
         const scrappedPage = load(page.data);
